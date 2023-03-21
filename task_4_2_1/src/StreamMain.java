@@ -9,10 +9,8 @@ public class StreamMain {
     public static List<Integer> intList =
             Arrays.asList(1, 2, 5, 16, -1, -2, 0, 32, 3, 5, 8, 23, 4);
 
-    public static List<Integer> resultList = new ArrayList<>();
-
     public static void main(String[] args) {
-        resultList = intList.stream()
+        List<Integer> resultList = intList.stream()
                 .filter(x -> x > 0 && x % 2 == 0)
                 .sorted(Comparator.naturalOrder())
                 .collect(Collectors.toList());

@@ -4,6 +4,13 @@ public class Main {
     public static final int LONDON_POPULATION = 10_000_000;
     public static final int MAX_AGE = 100;
 
+    public static final int LAWFUL_AGE = 18;
+
+    public static final int MAX_RECRUIT_AGE = 27;
+    public static final int MIN_LABOR_AGE = 18;
+    public static final int MAX_WOMAN_LABOR_AGE = 60;
+    public static final int MAX_MAN_LABOR_AGE = 65;
+
     public static void main(String[] args) {
         List<String> names = Arrays.asList("Jack", "Connor",
                 "Harry", "George", "Samuel", "John");
@@ -23,30 +30,25 @@ public class Main {
 
         // Count quantity of minor citizens
         int minorCitizensQty = (int) persons.stream()
-                .filter(x -> x.getAge() < 18)
+                .filter(x -> x.getAge() < LAWFUL_AGE)
                 .count();
-        System.out.println("(1) Quantity of minor citizens is: "
-                + minorCitizensQty + ".");
+        System.out.println("(1) Quantity of minor citizens is: " + minorCitizensQty + ".");
 
         // Find recruits
         List<String> recruits = persons.stream()
                 .filter(x -> x.getSex() == Sex.MAN &&
-                        x.getAge() >= 18 && x.getAge() < 27)
+                        x.getAge() >= LAWFUL_AGE && x.getAge() < MAX_RECRUIT_AGE)
                 .map(Person::getFamily)
                 .toList();
 
-        System.out.println("(2) Quantity of recruits is: "
-                + recruits.size() + ".");
+        System.out.println("(2) Quantity of recruits is: " + recruits.size() + ".");
 
         // Find labours
         Collection<Person> labours = persons.stream()
-                .filter(x ->
-                        (x.getSex() == Sex.MAN &&
-                                x.getEducation() == Education.HIGHER &&
-                                x.getAge() >= 18 && x.getAge() <= 65) ||
-                                (x.getSex() == Sex.WOMAN &&
-                                        x.getEducation() == Education.HIGHER &&
-                                        x.getAge() >= 18 && x.getAge() <= 60))
+                .filter(x -> x.getAge() >= MIN_LABOR_AGE &&
+                        x.getEducation() == Education.HIGHER &&
+                        (x.getSex() == Sex.WOMAN && x.getAge() <= MAX_WOMAN_LABOR_AGE ||
+                                x.getSex() == Sex.MAN && x.getAge() <= MAX_MAN_LABOR_AGE))
                 .sorted(new PersonComparator())
                 .toList();
         System.out.println("(3) Quantity of labours is: " + labours.size() + ".");
